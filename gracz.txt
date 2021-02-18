@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Drawing;
+
+namespace grawkulki
+{
+    class Gracz
+    {
+        public int x;
+        public int y;
+        public int szerokosc;
+        public int wysokosc;
+        public int szer_okna;
+        public int wys_okna;
+        public Gracz(int szerokoscokna, int wysokoscokna, int wysokoscgracza,int szerokoscgracza)
+        {
+            szerokosc = szerokoscgracza;
+            wysokosc = wysokoscgracza;
+            x = (szerokoscokna - szerokoscgracza) / 2;
+            y = (wysokoscokna - wysokoscgracza) / 2;
+            szer_okna = szerokoscokna;
+            wys_okna = wysokoscokna;
+        }
+        public void rysuj (Graphics g, Color c)
+        {
+            g.FillEllipse(new SolidBrush(c), x, y, szerokosc, wysokosc);
+        }
+        public void przesun(string strona)
+        {
+            if(strona=="prawa" && x<szer_okna-szerokosc)
+            {
+                x = x + 5;
+            }
+            if (strona == "lewa" && x>0)
+            {
+                x = x - 5;
+            }
+            if (strona == "gora" && y>0)
+            {
+                y = y - 5;
+            }
+            if (strona == "dol" && y<wys_okna-szerokosc)
+            {
+                y = y + 5;
+            }
+        }
+    }
+}

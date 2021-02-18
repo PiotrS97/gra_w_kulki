@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Timers;
+
+namespace grawkulki
+{
+    public partial class Form1 : Form
+    {
+        bool czygraaktywna = false;
+        DateTime start;
+        DateTime stop;
+        Random r = new Random();
+        Kulka[] k = new Kulka[100];
+        Gracz g;
+        int ilekulek;
+        int punkty;
+
+
+        public Form1()
+        {
+            InitializeComponent();
+            timer1.Start();
+            start = DateTime.Now;
+        }
+
+        
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            
+            if(czygraaktywna)
+            {
+                panel1.CreateGraphics().Clear(Color.LightBlue);
+                g.rysuj(panel1.CreateGraphics(), Color.Red);
+                for (int i = 0; i < ilekulek; i++)
+                {
+                    k[i].rysuj(panel1.CreateGraphics());
+                    k[i].przesun(panel1.Width, panel1.Height);
+                    if (k[i].Czy_kolizja(g.y, g.x, g.wysokosc, g.szerokosc))
+                    {
+                        
+                        czygraaktywna = false;
+                        MessageBox.Show("Liczba zdobytych punktów: " + punkty, "KONIEC GRY");
+                        button1.Enabled = true;
+                        textBox1.Enabled = true;
+                        
+                    }
+
+                }
+                punkty++;
+            }
+            else
+            {
+                FontFamily fFamily = new FontFamily("Arial");
+                Font f = new Font(fFamily, 15);
+                Brush b = new SolidBrush(Color.Black);
+                panel1.CreateGraphics().DrawString("Podaj liczbe kulek", f, b, 200, 135);
+                panel1.CreateGraphics().DrawString("nastepnie nacisnij start", f, b, 170, 165);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ilekulek = int.Parse(textBox1.Text);
+            if (ilekulek > 100) { ilekulek = 100; }
+            czygraaktywna = true;
+            g = new Gracz(panel1.Width, panel1.Height, 20, 20);
+            for (int i = 0; i < ilekulek; i++)
+            {
+                k[i] = new Kulka(panel1.Width, panel1.Height, r);
+            }
+            button1.Enabled = false;
+            textBox1.Enabled = false;
+            punkty = 0;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode==Keys.Right) { g.przesun("prawa"); }
+            if (e.KeyCode == Keys.Left) { g.przesun("lewa"); }
+            if (e.KeyCode == Keys.Up) { g.przesun("gora"); }
+            if (e.KeyCode == Keys.Down) { g.przesun("dol"); }
+        }
+    }
+}

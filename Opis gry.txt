@@ -1,0 +1,1 @@
+Gra polega na omijaniu czerwoną kulką pozostałych poruszających się losowo kulek w różnych kolorach. Gra kończy się, gdy gracz dotknie którejkolwiek kulki.
